@@ -1,3 +1,12 @@
+/*
+A simple script to simulate rolling dice.
+
+Usage:
+Call with bin name and two optional arguments <num of dice> <sides per die>
+If called with no arguments it will prompt you for each
+It will then print each result of each roll as well as the total
+*/
+
 package main
 
 import (
@@ -10,18 +19,22 @@ import (
 	"strings"
 )
 
+//simulates a single roll of on die of given number of sides (impossible shapes are allowed)
 func roll(die int) int {
 	rand.Seed(time.Now().UnixNano())
 	result := rand.Intn(die) + 1
 	return result
 }
 
+//Prints out each individual value of a slice (which will contain the dice roll values)
+//with the count before them for easy tracking
 func PrintSli(sli []int) {
 	for i, v := range sli {
 		fmt.Printf("%d: %d\n", i + 1, v)
 	}
 }
 
+//Sums the values of the slice
 func SumSli(sli []int) int {
 	sum := 0
 	for _, v := range sli {
@@ -30,6 +43,8 @@ func SumSli(sli []int) int {
 	return sum
 }
 
+
+//When no arguments are given, ask for each input
 func NoArgs() {
 	fmt.Printf("Number of dice to roll: ")
 	var numstr string
@@ -70,6 +85,8 @@ func NoArgs() {
 	fmt.Printf("Total: %d\n", SumSli(results))
 }
 
+
+//When arguments are given process them
 func HasArgs() {
 	var numstr string
 	numstr = os.Args[1]
@@ -95,6 +112,7 @@ func HasArgs() {
 }
 
 func main() {
+	//Mostly error handling for wrong number of arguments
 	if len(os.Args[1:]) == 0 {
 		NoArgs()
 	} else if len(os.Args[1:]) == 1 {

@@ -10,31 +10,31 @@ It will then print each result of each roll as well as the total
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"math/rand"
-	"time"
-	"strconv"
 	"os"
-	"bufio"
+	"strconv"
 	"strings"
+	"time"
 )
 
-//simulates a single roll of on die of given number of sides (impossible shapes are allowed)
+// simulates a single roll of on die of given number of sides (impossible shapes are allowed)
 func roll(die int) int {
 	rand.Seed(time.Now().UnixNano())
 	result := rand.Intn(die) + 1
 	return result
 }
 
-//Prints out each individual value of a slice (which will contain the dice roll values)
-//with the count before them for easy tracking
+// Prints out each individual value of a slice (which will contain the dice roll values)
+// with the count before them for easy tracking
 func PrintSli(sli []int) {
 	for i, v := range sli {
-		fmt.Printf("%d: %d\n", i + 1, v)
+		fmt.Printf("%d: %d\n", i+1, v)
 	}
 }
 
-//Sums the values of the slice
+// Sums the values of the slice
 func SumSli(sli []int) int {
 	sum := 0
 	for _, v := range sli {
@@ -43,8 +43,7 @@ func SumSli(sli []int) int {
 	return sum
 }
 
-
-//When no arguments are given, ask for each input
+// When no arguments are given, ask for each input
 func NoArgs() {
 	fmt.Printf("Number of dice to roll: ")
 	var numstr string
@@ -85,8 +84,7 @@ func NoArgs() {
 	fmt.Printf("Total: %d\n", SumSli(results))
 }
 
-
-//When arguments are given process them
+// When arguments are given process them
 func HasArgs() {
 	var numstr string
 	numstr = os.Args[1]
@@ -116,11 +114,18 @@ func main() {
 	if len(os.Args[1:]) == 0 {
 		NoArgs()
 	} else if len(os.Args[1:]) == 1 {
-		fmt.Printf("Please provide arguments in format 'roll [number of dice] [type of dice]' or no arguments for a menu.\n")
+		var diestr string
+		diestr = os.Args[1]
+		die, err := strconv.Atoi(diestr)
+		if err != nil {
+			fmt.Printf("'%s' is not a number. Please try again with your desired die to roll.\n", diestr)
+			return
+		}
+		fmt.Printf("%d", roll(die))
 	} else if len(os.Args[1:]) == 2 {
 		HasArgs()
 	} else {
 		fmt.Printf("Please provide arguments in format 'roll [number of dice] [type of dice]' or no arguments for a menu.\n")
 	}
-	
+
 }
